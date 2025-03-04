@@ -14,7 +14,11 @@
         ]
     },
     "doctrine/doctrine-fixtures-bundle": {
+<<<<<<< HEAD
         "version": "4.0",
+=======
+        "version": "3.7",
+>>>>>>> bec5718afb4985a758a37715afc81b7becb517ce
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
