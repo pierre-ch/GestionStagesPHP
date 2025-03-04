@@ -68,6 +68,10 @@ class Stage
     {
         $this->date_creation = new \DateTime();
         $this->date_modification = new \DateTime();
+
+        if (!$this->date_expiration) {
+            $this->date_expiration = (clone $this->date_creation)->modify('+20 days');
+        }
     }
 
     #[ORM\PreUpdate]

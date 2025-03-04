@@ -17,8 +17,11 @@ final class StageController extends AbstractController
     #[Route(name: 'app_stage_index', methods: ['GET'])]
     public function index(StageRepository $stageRepository): Response
     {
+        $stagesNonExpires = $stageRepository->getStagesNonExpires();
+
+
         return $this->render('stage/index.html.twig', [
-            'stages' => $stageRepository->findAll(),
+            'stages' => $stagesNonExpires,
         ]);
     }
 
