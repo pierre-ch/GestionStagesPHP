@@ -9,6 +9,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StageRepository::class)]
+#[ORM\Table(name: 'Stage')]
+#[ORM\HasLifecycleCallbacks()]
 class Stage
 {
     #[ORM\Id]
@@ -59,6 +61,19 @@ class Stage
     public function __construct()
     {
         $this->tuteurs = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist()
+    {
+        $this->date_creation = new \DateTime();
+        $this->date_modification = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate()
+    {
+        $this->date_modification = new \DateTime();
     }
 
     public function getId(): ?int
