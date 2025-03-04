@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -43,6 +45,21 @@ class Stage
 
     #[ORM\Column(length: 255)]
     private ?string $ville = null;
+
+    #[ORM\ManyToOne(inversedBy: 'stages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categorie $categorie = null;
+
+    /**
+     * @var Collection<int, Tuteur>
+     */
+    #[ORM\ManyToMany(targetEntity: Tuteur::class, inversedBy: 'stages')]
+    private Collection $tuteurs;
+
+    public function __construct()
+    {
+        $this->tuteurs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -165,6 +182,42 @@ class Stage
     public function setVille(string $ville): static
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): static
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tuteur>
+     */
+    public function getTuteurs(): Collection
+    {
+        return $this->tuteurs;
+    }
+
+    public function addTuteur(Tuteur $tuteur): static
+    {
+        if (!$this->tuteurs->contains($tuteur)) {
+            $this->tuteurs->add($tuteur);
+        }
+
+        return $this;
+    }
+
+    public function removeTuteur(Tuteur $tuteur): static
+    {
+        $this->tuteurs->removeElement($tuteur);
 
         return $this;
     }

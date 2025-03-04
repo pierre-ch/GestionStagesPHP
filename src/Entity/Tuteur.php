@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TuteurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TuteurRepository::class)]
@@ -24,6 +26,17 @@ class Tuteur
 
     #[ORM\Column(length: 255)]
     private ?string $telephone = null;
+
+    /**
+     * @var Collection<int, Stage>
+     */
+    #[ORM\ManyToMany(targetEntity: Stage::class, mappedBy: 'tuteurs')]
+    private Collection $stages;
+
+    public function __construct()
+    {
+        $this->stages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -74,6 +87,33 @@ class Tuteur
     public function setTelephone(string $telephone): static
     {
         $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Stage>
+     */
+    public function getStages(): Collection
+    {
+        return $this->stages;
+    }
+
+    public function addStage(Stage $stage): static
+    {
+        if (!$this->stages->contains($stage)) {
+            $this->stages->add($stage);
+            $stage->addTuteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStage(Stage $stage): static
+    {
+        if ($this->stages->removeElement($stage)) {
+            $stage->removeTuteur($this);
+        }
 
         return $this;
     }
