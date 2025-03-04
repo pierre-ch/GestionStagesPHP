@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <table class="table text-center">
+        <tr>
+            <th class="active text-center">Poste</th>
+            <th class="active text-center">Societe</th>
+            <th class="active text-center">Catégorie</th>
+            <th class="active text-center">Ville</th>
+            <th class="active text-center">Action</th>
+        </tr>
+
+        {% for stage in stages %}
+            <tr>
+                <td><a href="#">{{ stage.poste }}</a></td>
+                <td>
+                    <a href="#">
+                        {{ stage.societe }}
+                    </a>
+                </td>
+                <td>{{ stage.categorie.nom }}</td>
+                <td>{{ stage.ville }}</td>
+                <td>
+                    <a href="{{ path('app_stage_show', {'id': stage.id}) }}">détails</a>
+                    <a href="{{ path('app_stage_edit', {'id': stage.id}) }}">éditer</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
