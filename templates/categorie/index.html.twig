@@ -1,35 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Categorie index{% endblock %}
+{% block title %}Catégories avec stages non expirés{% endblock %}
 
 {% block body %}
-    <h1>Categorie index</h1>
+    <h1>Catégories de stages</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    {% if categories is empty %}
+        <p>Il n'y a pas de catégorie avec des stages non expirés actuellement.</p>
+    {% else %}
         {% for categorie in categories %}
-            <tr>
-                <td>{{ categorie.id }}</td>
-                <td>{{ categorie.nom }}</td>
-                <td>
-                    <a href="{{ path('app_categorie_show', {'id': categorie.id}) }}">show</a>
-                    <a href="{{ path('app_categorie_edit', {'id': categorie.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
+            <h2>{{ categorie.nom }}</h2>
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th class="active text-center">Poste</th>
+                        <th class="active text-center">Societe</th>
+                        <th class="active text-center">Ville</th>
+                        <th class="active text-center">Date d'expiration</th>
+                        <th class="active text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stage in categorie.stages %}
+                        {% if stage.dateExpiration > date() %}
+                            <tr>
+                                <td>{{ stage.poste }}</td>
+                                <td>{{ stage.societe }}</td>
+                                <td>{{ stage.ville }}</td>
+                                <td>{{ stage.dateExpiration|date('d/m/Y') }}</td>
+                                <td>
+                                    <a href="{{ path('app_stage_show', {'id': stage.id}) }}">détails</a>
+                                    <a href="{{ path('app_stage_edit', {'id': stage.id}) }}">éditer</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
         {% endfor %}
-        </tbody>
-    </table>
+    {% endif %}
 
-    <a href="{{ path('app_categorie_new') }}">Create new</a>
+    <div class="actions">
+        <a href="{{ path('app_categorie_new') }}" class="btn btn-primary">Créer une nouvelle catégorie</a>
+    </div>
 {% endblock %}

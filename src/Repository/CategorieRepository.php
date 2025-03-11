@@ -16,28 +16,36 @@ class CategorieRepository extends ServiceEntityRepository
         parent::__construct($registry, Categorie::class);
     }
 
-    //    /**
-    //     * @return Categorie[] Returns an array of Categorie objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @return Categorie[]
+     */
+    public function getCategoriesAvecStagesNonExpires()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c')
+            ->innerJoin('c.stages', 's')
+            ->where('s.date_expiration > :date')
+            ->setParameter('date', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Categorie
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Retourne les stages non expirés pour une catégorie donnée
+     * 
+     * @param Categorie $categorie
+     * @return Stage[]
+     */
+    public function getStagesNonExpires(Categorie $categorie)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('s')
+            ->join('c.stages', 's')
+            ->where('c.id = :categorieId')
+            ->andWhere('s.date_expiration > :date')
+            ->setParameter('categorieId', $categorie->getId())
+            ->setParameter('date', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
 }
