@@ -1,4 +1,63 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="row">
+    <div class="form-group">
+        <label >{{ field_label(form.poste) }}</label>
+        <input class="form-control" type="text" name="{{ field_name(form.poste) }}">
+    </div>
+    <div  class="form-group">
+        <label class="required">{{ field_label(form.type) }}</label>
+        <select name="{{ field_name(form.type) }}" class="form-control">
+            {% for label, value in field_choices(form.type) %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="nom">{{ field_label(form.description) }} </label>
+        <input class="form-control" type="text" name="{{ field_name(form.description) }}">
+    </div>
+    <div  class="form-group">
+        <label class="required">{{ field_label(form.actif) }}</label>
+        <select name="{{ field_name(form.actif) }}" class="form-control">
+            {% for label, value in field_choices(form.actif) %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div  class="form-group">
+        <label class="required">{{ field_label(form.email) }}</label>
+        <input class="form-control"  type="email" name="{{ field_name(form.email) }}" required="required" />
+    </div>
+    <div class="form-group">
+        <label class="required">{{ field_label(form.societe) }}</label>
+        <input class="form-control" type="text" name="{{ field_name(form.societe) }}" required="required" />
+    </div>
+    <div class="form-group">
+        <label for="stage_ville" class="required">{{ field_label(form.ville) }}</label>
+        <input class="form-control"  type="text" name="{{ field_name(form.ville) }}" required="required" />
+    </div>
+
+    <div class="form-group">
+        <label class="required">{{ field_label(form.categorie) }}</label>
+        <select name="{{ field_name(form.categorie) }}" class="form-control">
+            {% for label, value in field_choices(form.categorie) %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.tuteurs) }}
+        {% for checkbox in form.tuteurs.children %}
+            <div class="styled-input-single">
+                {{ form_widget(checkbox) }}
+                {{ form_label(checkbox) }}
+                {{ form_errors(checkbox) }}
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+<button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

@@ -7,6 +7,10 @@ use App\Entity\Stage;
 use App\Entity\Tuteur;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,30 +19,28 @@ class StageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('poste')
-            ->add('description')
-            ->add('type')
-            ->add('actif')
-            ->add('date_creation', null, [
-                'widget' => 'single_text',
+            ->add('poste', TextType::class)
+            ->add('type', ChoiceType::class, [
+                'choices' => ['Oui' => true, 'Non' => false],
+                'label' => 'Plein temps ?'
             ])
-            ->add('date_expiration', null, [
-                'widget' => 'single_text',
+            ->add('description', TextareaType::class)
+            ->add('actif', ChoiceType::class, [
+                'choices' => ['Oui' => true, 'Non' => false],
+                'label' => 'Actif ?'
             ])
-            ->add('date_modification', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('email')
-            ->add('societe')
-            ->add('ville')
+            ->add('email', EmailType::class)
+            ->add('societe', TextType::class)
+            ->add('ville', TextType::class)
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
             ])
             ->add('tuteurs', EntityType::class, [
                 'class' => Tuteur::class,
-                'choice_label' => 'id',
                 'multiple' => true,
+                'expanded' => true,
+                'choice_label' => 'nom',
             ])
         ;
     }
