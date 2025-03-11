@@ -16,6 +16,15 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            form_login:
+                # "app_login" is the name of the route created previously
+                login_path: app_login
+                check_path: app_login
+                enable_csrf: true
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -28,6 +37,14 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        # Restreindre l'accès aux fonctionnalités d'administration
+        - { path: ^/categorie/new, roles: ROLE_ADMIN }
+        - { path: ^/categorie/[0-9]+/edit, roles: ROLE_ADMIN }
+        - { path: ^/categorie/[0-9]+/delete, roles: ROLE_ADMIN }
+        - { path: ^/stage/new, roles: ROLE_ADMIN }
+        - { path: ^/stage/[0-9]+/edit, roles: ROLE_ADMIN }
+        - { path: ^/stage/[0-9]+/delete, roles: ROLE_ADMIN }
+        # ....
 
 when@test:
     security:
