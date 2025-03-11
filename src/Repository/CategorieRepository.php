@@ -30,6 +30,7 @@ class CategorieRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    // La méthode getStagesNonExpires que vous avez déjà ajoutée
     /**
      * Retourne les stages non expirés pour une catégorie donnée
      * 
