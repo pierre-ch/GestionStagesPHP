@@ -1,6 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {# Affichage des stages consultés récemment #}
+    <div class="recent-stages">
+        <h3>Les stages consultés récemment :</h3>
+        {% if historyStages is empty %}
+            <p>Aucun stage consulté récemment</p>
+        {% else %}
+            <p>
+                {% for stage in historyStages %}
+                    <a href="{{ path('app_stage_show', {'id': stage.id}) }}">{{ stage.poste }} - {{ stage.societe }}</a>
+                    {% if not loop.last %} | {% endif %}
+                {% endfor %}
+            </p>
+        {% endif %}
+    </div>
+
+    <h2>Liste des stages disponibles</h2>
+    
     <table class="table text-center">
         <tr>
             <th class="active text-center">Poste</th>
@@ -12,7 +29,7 @@
 
         {% for stage in stages %}
             <tr>
-                <td><a href="#">{{ stage.poste }}</a></td>
+                <td><a href="{{ path('app_stage_show', {'id': stage.id}) }}">{{ stage.poste }}</a></td>
                 <td>
                     <a href="#">
                         {{ stage.societe }}
@@ -27,4 +44,8 @@
             </tr>
         {% endfor %}
     </table>
+
+    <div class="actions">
+        <a href="{{ path('app_stage_new') }}" class="btn btn-primary">Créer un nouveau stage</a>
+    </div>
 {% endblock %}

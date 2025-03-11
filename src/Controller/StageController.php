@@ -10,18 +10,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Service\StageHistoryService;
 
 #[Route('/stage')]
 final class StageController extends AbstractController
 {
     #[Route(name: 'app_stage_index', methods: ['GET'])]
-    public function index(StageRepository $stageRepository): Response
+    public function index(StageRepository $stageRepository, stageHistoryService $stageHistoryService): Response
     {
         $stagesNonExpires = $stageRepository->getStagesNonExpires();
 
 
         return $this->render('stage/index.html.twig', [
             'stages' => $stagesNonExpires,
+            'historyStages' => $stageHistoryService->getStages(),
         ]);
     }
 
@@ -46,8 +48,11 @@ final class StageController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_stage_show', methods: ['GET'])]
-    public function show(Stage $stage): Response
+    public function show(Stage $stage, StageHistoryService $stageHistoryService): Response
     {
+        // Ajoute le stage actuel à l'historique de consultation
+        $stageHistoryService->addStage($stage);
+        
         return $this->render('stage/show.html.twig', [
             'stage' => $stage,
         ]);
