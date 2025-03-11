@@ -35,15 +35,21 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_USER }
+        - { path: ^/categorie/new, roles: ROLE_USER }
+        - { path: ^/categorie/[0-9]+/edit, roles: ROLE_USER }
+        - { path: ^/categorie/[0-9]+/delete, roles: ROLE_USER }
+        - { path: ^/stage/new, roles: ROLE_USER }
+        - { path: ^/stage/[0-9]+/edit, roles: ROLE_USER }
+        - { path: ^/stage/[0-9]+/delete, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }
         # Restreindre l'accès aux fonctionnalités d'administration
-        - { path: ^/categorie/new, roles: ROLE_ADMIN }
-        - { path: ^/categorie/[0-9]+/edit, roles: ROLE_ADMIN }
-        - { path: ^/categorie/[0-9]+/delete, roles: ROLE_ADMIN }
-        - { path: ^/stage/new, roles: ROLE_ADMIN }
-        - { path: ^/stage/[0-9]+/edit, roles: ROLE_ADMIN }
-        - { path: ^/stage/[0-9]+/delete, roles: ROLE_ADMIN }
+        #- { path: ^/categorie/new, roles: ROLE_ADMIN }
+        #- { path: ^/categorie/[0-9]+/edit, roles: ROLE_ADMIN }
+        #- { path: ^/categorie/[0-9]+/delete, roles: ROLE_ADMIN }
+        #- { path: ^/stage/new, roles: ROLE_ADMIN }
+        #- { path: ^/stage/[0-9]+/edit, roles: ROLE_ADMIN }
+        #- { path: ^/stage/[0-9]+/delete, roles: ROLE_ADMIN }
         # ....
 
 when@test:
