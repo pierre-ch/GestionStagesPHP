@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\StageHistoryService;
 
-#[Route('/stage')]
+#[Route('/{_locale}/stage')]
 final class StageController extends AbstractController
 {
     #[Route(name: 'app_stage_index', methods: ['GET'])]
